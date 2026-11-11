@@ -127,6 +127,7 @@ section{padding:clamp(72px,10vw,140px) 0;position:relative}
 .programs ul{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:10px}
 .programs a{display:inline-block;padding:10px 18px;border-radius:999px;background:var(--dg);color:var(--cream);text-decoration:none;font-weight:500}
 .programs a:hover{background:var(--leaf);color:var(--ink)}
+.programs .more{margin:20px 0 0;color:var(--text);font-weight:500}
 @media(max-width:900px){.pgrid{grid-template-columns:1fr;max-width:460px}}
 
 /* videos */

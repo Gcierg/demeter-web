@@ -18,3 +18,4 @@
 | "Alimentos más saludables" | mensaje de marca pedido por el cliente; la página lo expresa como alimentos cultivados con menos agroquímicos, sin promesas médicas |
 | El viaje de la espora: menos tóxico para quien lo aplica; fácil de diluir y dosificar; horarios convenientes para máxima eficacia; sirve con bomba de espalda, tractor, goteo o dron sin tapar boquillas; se aprovechan otras aplicaciones sin costo extra; vigor de la planta, microbiota del suelo y simbiosis | dicho por el cliente (chat, 2026-11-10); "toxicidad nula para las personas que lo apliquen" y compatibilidad con otros agroquímicos constan en la hoja "Nuestra Formulación" |
 | Contacto: sin distribuidor en Honduras; Nicaragua: Yader León, Creciente Agrícola | cambio del cliente en el repositorio (2026-11-11) |
+| También acompañan caña, maíz, hortalizas y frutales (sin ficha técnica en la web) | pedido del cliente (chat, 2026-11-11) |

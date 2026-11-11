@@ -29,6 +29,7 @@ T = {
 "Nuestras certificaciones orgánicas para Europa, Estados Unidos y Japón ayudan a que tu cosecha llegue a esos mercados.": ("Our organic certifications for Europe, the United States and Japan help your harvest reach those markets.", "Nossas certificações orgânicas para a Europa, os Estados Unidos e o Japão ajudam sua colheita a chegar a esses mercados."),
 "Y nuestros distribuidores llegan a Latinoamérica y el Caribe.": ("And our distributors reach Latin America and the Caribbean.", "E nossos distribuidores chegam à América Latina e ao Caribe."),
 "Demeter: del suelo a tu mesa.": ("Demeter: from the soil to your table.", "Demeter: do solo à sua mesa."),
+"Y también acompañamos caña, maíz, hortalizas y frutales.": ("We also support sugar cane, maize, vegetables and fruit trees.", "E também acompanhamos cana, milho, hortaliças e frutíferas."),
 "Una plaga está atacando tu cultivo.": ("A pest is attacking your crop.", "Uma praga está atacando a sua lavoura."),
 "Pero no estás solo: llegan dos hongos benéficos.": ("But you are not alone: two beneficial fungi arrive.", "Mas você não está sozinho: chegam dois fungos benéficos."),
 "Sus esporas se adhieren al insecto, germinan y lo controlan desde dentro.": ("Their spores stick to the insect, germinate and control it from within.", "Seus esporos aderem ao inseto, germinam e o controlam por dentro."),
