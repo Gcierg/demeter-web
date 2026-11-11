@@ -112,9 +112,9 @@ export function createJourney(canvas) {
     for (let x = -3; x <= 3; x++) for (let z = 6; z <= 9; z++) for (let y = 5; y <= 8; y++) if (Math.abs(x) === 3 || z === 6 || z === 9 || y === 5 || y === 8) a(x, y, z, y === 8 ? '#1E5F96' : '#2F7FC0');
     for (let x = -24; x <= 0; x++) { a(x, 8, 10, '#8A9096'); if (x % 4 === 0) a(x, 7, 10, '#E2B84A'); } for (let y = 5; y <= 8; y++) a(0, y, 10, '#8A9096');
     tractor.add(rig(L)); }
-  // the drone that becomes a plane
+  // the spray drone
   const drone = new THREE.Group(); farm.add(drone);
-  const dBody = new THREE.Group(), dArms = new THREE.Group(), dWings = new THREE.Group(), rotors = [];
+  const dBody = new THREE.Group(), dArms = new THREE.Group(), rotors = [];
   { const L = [], a = (x, y, z, c) => L.push([x, y, z, c]);
     for (let x = -1; x <= 1; x++) for (let z = -3; z <= 3; z++) for (let y = 0; y <= 1; y++) a(x, y, z, y === 1 && Math.abs(z) < 2 ? '#7CA240' : '#EEE8DE'); a(0, 1, -4, '#30363A'); a(0, 0, -4, '#EEE8DE');
     for (let x = -1; x <= 1; x++) for (let z = -1; z <= 1; z++) a(x, -1.5, z, '#2F7FC0'); for (const sx of [-1, 1]) for (const sz of [-1, 1]) a(sx, -2.6, sz, '#30363A');
@@ -123,12 +123,7 @@ export function createJourney(canvas) {
     for (const sx of [-1, 1]) for (const sz of [-1, 1]) { for (let k = 2; k <= 4; k++) a(sx * k, .5, sz * k, '#30363A'); a(sx * 5, 1.2, sz * 5, '#E2B84A');
       const g = new THREE.Group(); g.position.set(sx * 5, 2.1, sz * 5); const P = []; for (let k = -2; k <= 2; k++) { P.push([k, 0, 0, '#C9CCC4', .9]); if (k) P.push([0, 0, k, '#C9CCC4', .9]); } g.add(rig(P)); dArms.add(g); rotors.push(g); }
     dArms.add(rig(L)); }
-  { const L = [], a = (x, y, z, c) => L.push([x, y, z, c]);
-    for (let x = -11; x <= 11; x++) for (let z = -1; z <= 1; z++) if (Math.abs(x) > 1 && !(Math.abs(x) > 9 && z === -1)) a(x, .5, z, Math.abs(x) > 8 ? '#7CA240' : '#EEE8DE');
-    for (let x = -4; x <= 4; x++) if (Math.abs(x) > 1) a(x, .5, 4, '#EEE8DE'); for (let y = 2; y <= 4; y++) a(0, y, 4 - (y > 3 ? 0 : 0), '#7CA240'); a(0, 2, 3, '#7CA240');
-    for (let k = -2; k <= 2; k++) if (k) a(k, .5, -5, '#30363A');
-    dWings.add(rig(L)); }
-  drone.add(dBody, dArms, dWings);
+  drone.add(dBody, dArms);
   // harvest crates by the path
   const crates = new THREE.Group(); farm.add(crates);
   { const L = [], a = (x, y, z, c) => L.push([x, y, z, c]); const fill = ['#E3C04B', '#E2402F', '#8CC152'];
@@ -149,7 +144,7 @@ export function createJourney(canvas) {
   const KEY = {
     tank: [[V(22, 150, 60), V(22, 6, 26)], [V(40, 64, 62), V(22, 8, 26)], [V(30, 30, 44), V(22, 8, 26)], [V(22, 17, 28.5), V(22, 7, 26)]],
     spray: [[V(40, 30, 66), V(-8, 6, 24)], [V(36, 30, 50), V(-14, 4, 8)], [V(28, 30, 38), V(-22, 3, -6)]],
-    field: [[V(-2, 26, 46), V(-22, 3, -2)], [V(4, 15, 26), V(-25, 3, -10)], [V(30, 46, 70), V(-12, 2, -6)]],
+    field: [[V(-2, 26, 46), V(-22, 3, -2)], [V(-4, 13, 30), V(-25, 3, -8)], [V(30, 46, 70), V(-12, 2, -6)]],
     close: [[V(30, 46, 70), V(-12, 2, -6)], [V(-24, 9, 66), V(-24, 0, 40)], [V(20, 13, 58), V(10, 4, 36)], [V(70, 120, 150), V(-4, 0, -6)]],
   };
 
@@ -204,20 +199,20 @@ export function createJourney(canvas) {
     // the farmer: stirring at the tank, spraying with the backpack, then standing by
     if (atTank) { man.position.set(TK[0] - 10, 1, TK[1] + 1); man.rotation.y = Math.PI / 2; const a = t * 2.2 + p * 60; stick.visible = true; stick.position.set(TK[0] + Math.cos(a) * 2.6, 5, TK[1] + Math.sin(a) * 2.6); stick.rotation.set(Math.sin(a) * .22, 0, -.5 - Math.cos(a) * .12); armL.rotation.set(-1.1 + Math.sin(a) * .25, 0, .2); armR.rotation.set(-1.25 + Math.cos(a) * .25, 0, -.2); lance.visible = false; packM.visible = false; }
     else if (s === 5) { man.position.set(lerp(-1, -4, walk), 1 + Math.abs(Math.sin(t * 5)) * .25, lerp(34, 6, walk)); man.rotation.y = Math.PI + .95 + Math.sin(t * 1.4) * .3; stick.visible = false; lance.visible = true; packM.visible = true; armL.rotation.set(-.4, 0, .1); armR.rotation.set(-1.2, 0, -.1); }
-    else { man.position.set(close ? 17 : 2, 1, close ? 33 : 30); man.rotation.y = close ? .35 : -Math.PI / 2; stick.visible = false; lance.visible = false; packM.visible = !close; const wave = close ? Math.sin(t * 5) * .5 : 0; armL.rotation.set(0, 0, .12); armR.rotation.set(0, 0, close ? -2.6 + wave : -.12); }
+    else { man.position.set(close ? 17 : 33, 1, close ? 33 : 30); man.rotation.y = close ? .35 : -Math.PI / 2; stick.visible = false; lance.visible = false; packM.visible = !close; const wave = close ? Math.sin(t * 5) * .5 : 0; armL.rotation.set(0, 0, .12); armR.rotation.set(0, 0, close ? -2.6 + wave : -.12); }
     man.updateMatrixWorld(true);
     const Sw = swirlM.instanceMatrix.array; for (let k = 0; k < 90; k++) { const a = k * .7 + t * 1.8 + p * 50, d = .6 + (k / 90) * 4.2; put(Sw, k, TK[0] + Math.cos(a) * d, 8.6, TK[1] + Math.sin(a) * d, atTank ? .5 : 0); } swirlM.instanceMatrix.needsUpdate = true;
-    // equipment: tractor with boom (a), drip line (b), drone that turns into a plane (c)
-    const ua = seg(u, 0, .32), uc = seg(u, .62, 1), morph = equip ? ease(seg(uc, .5, .68)) : 0, fly = equip ? seg(uc, .66, 1) : 0;
+    // equipment: tractor with boom (a), drip line (b), spray drone (c)
+    const ua = seg(u, 0, .32), uc = seg(u, .62, 1);
     const tz = lerp(10, -30, ua); tractor.visible = equip || s === 6 || close; tractor.position.set(43, 1, equip ? tz : -30);
-    drone.visible = equip && u > .5; dPos.set(lerp(-40, -14, ease(seg(uc, 0, .6))) + fly * fly * 150, 16 + Math.sin(t * 2) * .4 + fly * fly * 70, -2 - fly * 10); drone.position.copy(dPos); drone.rotation.set(0, -Math.PI / 2, -fly * .35);
-    dArms.scale.setScalar(Math.max(.001, 1 - morph)); dWings.scale.set(Math.max(.001, morph), Math.max(.001, morph), Math.max(.001, morph)); for (const r of rotors) r.rotation.y = t * 31;
+    drone.visible = equip && u > .5; dPos.set(lerp(-42, -8, uc), 16 + Math.sin(t * 2) * .4, -2 + Math.sin(uc * 6.283) * 5); drone.position.copy(dPos); drone.rotation.set(Math.sin(t * 1.7) * .04, -Math.PI / 2, -.08);
+    for (const r of rotors) r.rotation.y = t * 31;
     // spray: from the lance, the boom nozzles or the drone
     const Sp = sprayM.instanceMatrix.array;
     if (s === 5) { const tip = lance.localToWorld(V(0, 0, 13.5)), dir = V(0, 0, 1).applyQuaternion(lance.getWorldQuaternion(QW)), on = seg(u, .06, .2), sx = dir.z, sz = -dir.x;
       for (let k = 0; k < NSPR; k++) { const ph = (t * .9 + hash(k, 1)) % 1, sp = (hash(k, 2) - .5) * 2, reach = ph * 26; put(Sp, k, tip.x + dir.x * reach + sx * sp * ph * 15, Math.max(1.2, tip.y + 1.5 * ph - ph * ph * 7 + hash(k, 3) * 2.5 * ph), tip.z + dir.z * reach + sz * sp * ph * 15, on * (ph < .96 ? .5 + ph * .8 : 0)); } }
     else if (equip && u < .4) { for (let k = 0; k < NSPR; k++) { const ph = (t * 1.3 + hash(k, 1)) % 1, n = k % 7; put(Sp, k, 43 - n * 4 + (hash(k, 2) - .5) * 3 * ph, 8 - ph * 7, tz + 10 + (hash(k, 3) - .5) * 3 * ph + ph * 2.5, (1 - seg(u, .3, .38)) * (.35 + ph * .5)); } }
-    else if (equip && u > .56) { const on = 1 - morph; for (let k = 0; k < NSPR; k++) { const ph = (t * 1.2 + hash(k, 1)) % 1, a = hash(k, 2) * 6.283, r = ph * 7 * hash(k, 3); put(Sp, k, dPos.x + Math.cos(a) * r - ph * 3, dPos.y - 3 - ph * 12, dPos.z + Math.sin(a) * r, on * seg(uc, .04, .14) * (.35 + ph * .5)); } }
+    else if (equip && u > .56) { const on = 1; for (let k = 0; k < NSPR; k++) { const ph = (t * 1.2 + hash(k, 1)) % 1, a = hash(k, 2) * 6.283, r = ph * 7 * hash(k, 3); put(Sp, k, dPos.x + Math.cos(a) * r - ph * 3, dPos.y - 3 - ph * 12, dPos.z + Math.sin(a) * r, on * seg(uc, .04, .14) * (.35 + ph * .5)); } }
     else for (let k = 0; k < NSPR; k++) put(Sp, k, 0, -50, 0, 0);
     sprayM.instanceMatrix.needsUpdate = true;
     // drip line: drops fall from every emitter
@@ -240,7 +235,7 @@ export function createJourney(canvas) {
     crates.visible = close; const pop = close ? eo(seg(u, .5, .66)) : 0; crates.scale.setScalar(Math.max(.001, pop)); crates.position.y = 1 + (1 - pop) * 6;
     // camera
     if (equip) {
-      const shot = (n) => { if (n === 0) { Pc.set(66, 24, tz + 32); Tc.set(32, 4, tz + 2); } else if (n === 1) { const v = seg(u, .34, .6); Pc.set(-36 + v * 22, 12, 58); Tc.set(-32 + v * 22, 1, 37); } else { Pc.set(-2 + uc * 14, 24, 40); Tc.set(Math.min(dPos.x, 40), Math.min(dPos.y, 40) - 3, dPos.z); } };
+      const shot = (n) => { if (n === 0) { Pc.set(66, 24, tz + 32); Tc.set(32, 4, tz + 2); } else if (n === 1) { const v = seg(u, .34, .6); Pc.set(-36 + v * 22, 12, 58); Tc.set(-32 + v * 22, 1, 37); } else { Pc.set(dPos.x + 22, 23, 34); Tc.set(dPos.x, dPos.y - 6, dPos.z); } };
       if (u < .3) shot(0); else if (u < .36) { shot(0); Pa.copy(Pc); Ta.copy(Tc); shot(1); const k = ease(seg(u, .3, .36)); Pc.lerpVectors(Pa, Pc, k); Tc.lerpVectors(Ta, Tc, k); }
       else if (u < .58) shot(1); else if (u < .64) { shot(1); Pa.copy(Pc); Ta.copy(Tc); shot(2); const k = ease(seg(u, .58, .64)); Pc.lerpVectors(Pa, Pc, k); Tc.lerpVectors(Ta, Tc, k); } else shot(2);
       cam.position.copy(Pc); cam.lookAt(Tc);
