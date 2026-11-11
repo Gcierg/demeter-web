@@ -14,4 +14,5 @@
 | Certificaciones orgánicas para Europa, Estados Unidos y Japón | dicho por el cliente (chat, 2026-11-09), coincide con la web |
 | Meta: reducir el uso de agroquímicos | dicho por el cliente; web: "help reduce the use of pesticides and chemical nutrients" |
 | Distribuidores y teléfonos | demeternanotechnologies.com/home-page-spanish (Contact) |
+| Distribuidor principal para Latinoamérica y el Caribe: Jens Schenck, Agros-Cropscience | confirmado por el cliente (chat, 2026-11-10); correo tomado de la web en inglés |
 | "Alimentos más saludables" | mensaje de marca pedido por el cliente; la página lo expresa como alimentos cultivados con menos agroquímicos, sin promesas médicas |
