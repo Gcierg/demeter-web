@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demeter · Menos químicos, alimentos más saludables</title>
+<meta name="description" content="Biocontrol orgánico certificado en gel hidrosoluble 10GW: menos químicos en el campo, alimentos más saludables.">
+<link rel="icon" href="assets/img/favicon.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <a class="brand" href="#top" aria-label="Demeter"><img src="assets/img/logo.png" alt="Demeter" width="150" height="41"></a>
+  <nav class="links" aria-label="Principal">
+    <a href="#why" data-i18n="nav.why"></a>
+    <a href="#journey" data-i18n="nav.journey"></a>
+    <a href="#factors" data-i18n="nav.factors"></a>
+    <a href="#products" data-i18n="nav.products"></a>
+    <a href="#videos" data-i18n="nav.videos"></a>
+    <a href="#contact" data-i18n="nav.contact"></a>
+  </nav>
+  <div class="lang" role="group" aria-label="Idioma / Language / Idioma">
+    <button data-lang="es" aria-pressed="true">ES</button>
+    <button data-lang="en" aria-pressed="false">EN</button>
+    <button data-lang="pt" aria-pressed="false">PT</button>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- 1. Hero: healthier food, fewer chemicals -->
+<section class="hero">
+  <canvas id="heroField" aria-hidden="true"></canvas>
+  <div class="hero-in">
+    <p class="kicker" data-i18n="hero.kicker"></p>
+    <h1><span data-i18n="hero.h1a"></span> <em data-i18n="hero.h1b"></em></h1>
+    <p class="lead" data-i18n="hero.lead"></p>
+    <div class="cta">
+      <a class="btn solid" href="#journey" data-i18n="hero.cta1"></a>
+      <a class="btn ghost" href="#contact" data-i18n="hero.cta2"></a>
+    </div>
+    <ul class="certs" aria-label="Certifications">
+      <li><b>IMOcert</b><span data-i18n="cert.eu"></span></li>
+      <li><b>USDA NOP</b><span data-i18n="cert.us"></span></li>
+      <li><b>JAS</b><span data-i18n="cert.jp"></span></li>
+    </ul>
+  </div>
+  <a class="scrollcue" href="#why" aria-hidden="true"><span></span></a>
+</section>
+
+<!-- 2. Why: the benefits -->
+<section class="why" id="why">
+  <div class="wrap">
+    <p class="kicker" data-i18n="why.kicker"></p>
+    <h2 data-i18n="why.h2"></h2>
+    <p class="lead narrow" data-i18n="why.lead"></p>
+    <div class="trio">
+      <article>
+        <span class="num">01</span>
+        <h3 data-i18n="why.c1t"></h3>
+        <p data-i18n="why.c1"></p>
+      </article>
+      <article>
+        <span class="num">02</span>
+        <h3 data-i18n="why.c2t"></h3>
+        <p data-i18n="why.c2"></p>
+      </article>
+      <article>
+        <span class="num">03</span>
+        <h3 data-i18n="why.c3t"></h3>
+        <p data-i18n="why.c3"></p>
+      </article>
+    </div>
+    <div class="benefits">
+      <div><h4 data-i18n="why.b1t"></h4><p data-i18n="why.b1"></p></div>
+      <div><h4 data-i18n="why.b2t"></h4><p data-i18n="why.b2"></p></div>
+      <div><h4 data-i18n="why.b3t"></h4><p data-i18n="why.b3"></p></div>
+      <div><h4 data-i18n="why.b4t"></h4><p data-i18n="why.b4"></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. The journey: scroll-driven sequence, spore → gel → water → farmer → field -->
+<section class="journey" id="journey" aria-label="El viaje de la espora">
+  <div class="sticky">
+    <canvas id="seq" aria-hidden="true"></canvas>
+    <canvas id="seq3d" aria-hidden="true" hidden></canvas>
+    <div class="flash" id="flash" aria-hidden="true"></div>
+    <div class="shade"></div>
+    <div class="jhead">
+      <p class="kicker light" data-i18n="j.kicker"></p>
+      <div class="progress" aria-hidden="true"><i id="jbar"></i></div>
+    </div>
+    <ol class="stages" id="stages">
+      <li><span>01</span><h3 data-i18n="j.s1t"></h3><p data-i18n="j.s1"></p></li>
+      <li><span>02</span><h3 data-i18n="j.s2t"></h3><p data-i18n="j.s2"></p></li>
+      <li><span>03</span><h3 data-i18n="j.s3t"></h3><p data-i18n="j.s3"></p></li>
+      <li><span>04</span><h3 data-i18n="j.s4t"></h3><p data-i18n="j.s4"></p></li>
+      <li><span>05</span><h3 data-i18n="j.s5t"></h3><p data-i18n="j.s5"></p></li>
+      <li><span>06</span><h3 data-i18n="j.s6t"></h3><p data-i18n="j.s6"></p></li>
+      <li><span>07</span><h3 data-i18n="j.s7t"></h3><p data-i18n="j.s7"></p></li>
+    </ol>
+    <p class="seqnote" id="seqnote" hidden data-i18n="j.note"></p>
+  </div>
+</section>
+
+<!-- 4. Key factors -->
+<section class="factors" id="factors">
+  <div class="wrap">
+    <p class="kicker" data-i18n="f.kicker"></p>
+    <h2 data-i18n="f.h2"></h2>
+    <div class="fgrid">
+      <article class="big">
+        <img src="assets/img/stability.jpg" alt="" loading="lazy" width="460" height="554">
+        <div>
+          <h3 data-i18n="f.1t"></h3>
+          <p data-i18n="f.1"></p>
+          <p class="cap" data-i18n="f.1cap"></p>
+        </div>
+      </article>
+      <article><b class="stat" data-i18n="f.2s"></b><h3 data-i18n="f.2t"></h3><p data-i18n="f.2"></p></article>
+      <article><b class="stat" data-i18n="f.3s"></b><h3 data-i18n="f.3t"></h3><p data-i18n="f.3"></p></article>
+      <article><b class="stat" data-i18n="f.4s"></b><h3 data-i18n="f.4t"></h3><p data-i18n="f.4"></p></article>
+      <article><b class="stat" data-i18n="f.5s"></b><h3 data-i18n="f.5t"></h3><p data-i18n="f.5"></p></article>
+      <article><b class="stat" data-i18n="f.6s"></b><h3 data-i18n="f.6t"></h3><p data-i18n="f.6"></p></article>
+      <article><b class="stat" data-i18n="f.7s"></b><h3 data-i18n="f.7t"></h3><p data-i18n="f.7"></p></article>
+      <article><b class="stat" data-i18n="f.8s"></b><h3 data-i18n="f.8t"></h3><p data-i18n="f.8"></p></article>
+      <article><b class="stat" data-i18n="f.9s"></b><h3 data-i18n="f.9t"></h3><p data-i18n="f.9"></p></article>
+    </div>
+  </div>
+</section>
+
+<!-- 5. Products and programmes -->
+<section class="products" id="products">
+  <div class="wrap">
+    <p class="kicker" data-i18n="p.kicker"></p>
+    <h2 data-i18n="p.h2"></h2>
+    <div class="pgrid">
+      <article>
+        <img src="assets/img/b_steel.jpg" alt="NANO-STEEL 10GW" loading="lazy" width="410" height="624">
+        <p class="tag" data-i18n="p.steelTag"></p>
+        <h3>NANO-STEEL 10GW</h3>
+        <p class="sci"><i>Paecilomyces lilacinus</i></p>
+        <p data-i18n="p.steel"></p>
+        <a class="sheet" target="_blank" rel="noopener" href="https://demeternanotechnologies.com/wp-content/uploads/2023/04/1-Technical-Data-Sheet-for-Nano-Steel-20230418T222007Z-001.zip" data-i18n="p.sheet"></a>
+      </article>
+      <article>
+        <img src="assets/img/b_xtinger.jpg" alt="NANO-XTINGER 10GW" loading="lazy" width="410" height="611">
+        <p class="tag" data-i18n="p.xtTag"></p>
+        <h3>NANO-XTINGER 10GW</h3>
+        <p class="sci"><i>Trichoderma asperellum · T. harzianum</i></p>
+        <p data-i18n="p.xt"></p>
+        <a class="sheet" target="_blank" rel="noopener" href="https://demeternanotechnologies.com/wp-content/uploads/2023/04/2-Technical-Data-Sheet-for-Nano-Xtinger-20230418T222457Z-001.zip" data-i18n="p.sheet"></a>
+      </article>
+      <article>
+        <img src="assets/img/b_mix.jpg" alt="NANO-MIX 10GW" loading="lazy" width="410" height="620">
+        <p class="tag" data-i18n="p.mixTag"></p>
+        <h3>NANO-MIX 10GW</h3>
+        <p class="sci"><i>Beauveria bassiana · Metarhizium anisopliae</i></p>
+        <p data-i18n="p.mix"></p>
+        <a class="sheet" target="_blank" rel="noopener" href="https://demeternanotechnologies.com/wp-content/uploads/2023/04/3-Technical-Data-Sheet-for-Nano-Mix-20230418T222512Z-001.zip" data-i18n="p.sheet"></a>
+      </article>
+    </div>
+
+    <div class="programs">
+      <h3 data-i18n="p.progT"></h3>
+      <p data-i18n="p.prog"></p>
+      <ul>
+        <li><a target="_blank" rel="noopener" href="https://demeternanotechnologies.com/wp-content/uploads/2023/04/Rice-Seed-Bio-Program-20230418T222541Z-001.zip" data-i18n="p.riceSeed"></a></li>
+        <li><a target="_blank" rel="noopener" href="https://demeternanotechnologies.com/wp-content/uploads/2023/04/Rice-Bio-Program-20230418T222539Z-001.zip" data-i18n="p.rice"></a></li>
+        <li><a target="_blank" rel="noopener" href="https://demeternanotechnologies.com/wp-content/uploads/2023/04/Peanut-Bio-Program-20230418T222531Z-001.zip" data-i18n="p.peanut"></a></li>
+        <li><a target="_blank" rel="noopener" href="https://demeternanotechnologies.com/wp-content/uploads/2023/04/Coffee-Bio-Program-20230418T222525Z-001.zip" data-i18n="p.coffee"></a></li>
+        <li><a target="_blank" rel="noopener" href="https://demeternanotechnologies.com/wp-content/uploads/2023/04/Tomato-Bio-Program-20230418T222600Z-001.zip" data-i18n="p.tomato"></a></li>
+        <li><a target="_blank" rel="noopener" href="https://demeternanotechnologies.com/wp-content/uploads/2023/04/Tobacco-Bio-Program-20230418T222555Z-001.zip" data-i18n="p.tobacco"></a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 6. Videos -->
+<section class="videos" id="videos">
+  <div class="wrap">
+    <p class="kicker light" data-i18n="v.kicker"></p>
+    <h2 data-i18n="v.h2"></h2>
+    <p class="lead narrow light" data-i18n="v.lead"></p>
+    <div class="vgrid" id="vgrid"></div>
+  </div>
+</section>
+
+<!-- 7. Certifications -->
+<section class="certsec" id="certs">
+  <div class="wrap">
+    <p class="kicker" data-i18n="c.kicker"></p>
+    <h2 data-i18n="c.h2"></h2>
+    <div class="cgrid">
+      <article><b data-i18n="c.eu"></b><h3>IMOcert</h3><p data-i18n="c.euT"></p></article>
+      <article><b data-i18n="c.us"></b><h3>USDA NOP</h3><p data-i18n="c.usT"></p></article>
+      <article><b data-i18n="c.jp"></b><h3>JAS</h3><p data-i18n="c.jpT"></p></article>
+    </div>
+    <p class="origin" data-i18n="c.origin"></p>
+  </div>
+</section>
+
+<!-- 8. Contact: distributors -->
+<section class="contact" id="contact">
+  <div class="wrap">
+    <p class="kicker light" data-i18n="ct.kicker"></p>
+    <h2 data-i18n="ct.h2"></h2>
+    <div class="dgrid">
+      <article>
+        <b data-i18n="ct.master"></b>
+        <h3>Jens Schenck</h3>
+        <a href="tel:+50762429855">+507 6242-9855</a>
+      </article>
+      <article>
+        <b>Panamá</b>
+        <h3>Velsimex de Panamá</h3>
+        <p>Gerardo Jiménez · <span data-i18n="ct.manager"></span></p>
+        <a href="tel:+50769981488">+507 6998-1488</a>
+        <p>Ing. Noriel Castrellón · <span data-i18n="ct.central"></span></p>
+        <a href="tel:+50769977747">+507 6997-7747</a>
+      </article>
+      <article>
+        <b>Nicaragua</b>
+        <h3>Creciente Agrícola de Nicaragua</h3>
+        <p>Ing. Oswaldo González · Matagalpa</p>
+        <a href="tel:+50527729025">+505 2772-9025</a>
+        <a href="mailto:info@crecienteagricola.com">info@crecienteagricola.com</a>
+      </article>
+      <article>
+        <b>Honduras</b>
+        <h3>WC Agrícola</h3>
+        <p>Ing. Julio Chávez · Choluteca</p>
+        <a href="tel:+50488133379">+504 8813-3379</a>
+        <p>Ing. Walter Cardona · Comayagua</p>
+        <a href="tel:+50494360630">+504 9436-0630</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <img src="assets/img/logo.png" alt="Demeter" width="130" height="35">
+  <p>Demeter Nanotechnologies Inc. · Boquete, Chiriquí, República de Panamá</p>
+  <p class="small" data-i18n="ft.note"></p>
+</footer>
+
+<script src="i18n.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
