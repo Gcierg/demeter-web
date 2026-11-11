@@ -80,7 +80,7 @@
   }
 
   const progress = () => { const r = sec.getBoundingClientRect(); return clamp(-r.top / (r.height - innerHeight), 0, 1); };
-  function stageOf(p) { if (cuts) { let i = 0; while (i < cuts.length - 1 && p >= cuts[i + 1]) i++; return i; } return Math.min(6, Math.floor(p * 7)); }
+  function stageOf(p) { if (cuts) { let i = 0; while (i < cuts.length - 1 && p >= cuts[i + 1]) i++; return i; } return Math.min(stages.length - 1, Math.floor(p * stages.length)); }
 
   function cover(im, w, h) { const s = Math.max(w / im.width, h / im.height), dw = im.width * s, dh = im.height * s; cx.drawImage(im, (w - dw) / 2, (h - dh) / 2, dw, dh); }
   function spore(x, y, r, rot, col = [168, 200, 106]) {
@@ -91,7 +91,7 @@
   }
   function gelBubble(x, y, r, a = 1) { cx.strokeStyle = `rgba(210,240,255,${.55 * a})`; cx.lineWidth = Math.max(1, r * .08); cx.beginPath(); cx.arc(x, y, r, 0, 6.283); cx.stroke(); cx.fillStyle = `rgba(190,230,255,${.1 * a})`; cx.fill(); cx.fillStyle = `rgba(255,255,255,${.6 * a})`; cx.beginPath(); cx.arc(x - r * .35, y - r * .35, r * .16, 0, 6.283); cx.fill(); }
   function preview(p, w, h) {
-    const s = p * 7, i = Math.min(6, Math.floor(s)), u = s - i, m = Math.min(w, h), X = w / 2, Y = h * .44;
+    const s9 = p * 9, i9 = Math.min(8, Math.floor(s9)), i = [0, 1, 2, 3, 4, 5, 5, 6, 6][i9], u = s9 - i9, m = Math.min(w, h), X = w / 2, Y = h * .44;
     const bg = cx.createRadialGradient(X, Y, m * .05, X, Y, Math.max(w, h) * .8);
     const water = i >= 2 && i !== 3 && i < 5, sky = i === 3 || i >= 5;
     bg.addColorStop(0, sky ? '#8FB7A0' : water ? '#2E7B8C' : '#2F6B55'); bg.addColorStop(1, sky ? '#1E4136' : water ? '#0E2B36' : '#0D1F19');

@@ -66,12 +66,17 @@ export function createJourney(canvas) {
   // shed, trees, palms, hills, fence: the things that make it a place
   box(8, 20, 1, 6, 12, 20, (x, y, z) => (y < 2 ? '#B9B1A0' : '#E8DFCC')); for (let k = 0; k <= 5; k++) box(7 + k, 21 - k, 7 + k, 7 + k, 11, 21, '#B5482F'); box(13, 15, 1, 4, 20, 20, '#6E4A2A');
   const tree = (x, z, h, c) => { for (let y = 1; y <= h; y++) add(x, y, z, '#6E4A2A'); for (let dx = -3; dx <= 3; dx++) for (let dy = -2; dy <= 3; dy++) for (let dz = -3; dz <= 3; dz++) if (Math.hypot(dx, dy * 1.2, dz) <= 3.3 && hash(x + dx, dy, z + dz) < .86) add(x + dx, h + 2 + dy, z + dz, pick(c, dx, dy, dz)); };
-  [[-44, 38, 7], [-36, 40, 9], [44, 14, 8], [45, -40, 9], [-45, -40, 8], [40, 40, 7]].forEach(([x, z, h]) => tree(x, z, h, ['#2F6B3A', '#3A7D45', '#27603A']));
+  [[-44, 38, 7], [-36, 40, 9], [45, -40, 9], [-45, -40, 8], [40, 40, 7]].forEach(([x, z, h]) => tree(x, z, h, ['#2F6B3A', '#3A7D45', '#27603A']));
   const palm = (x, z, h) => { for (let y = 1; y <= h; y++) add(x + Math.round(y * .12), y, z, y % 2 ? '#8A6240' : '#7A5230'); for (let a = 0; a < 6; a++) for (let k = 1; k <= 5; k++) add(x + 1 + Math.round(Math.cos(a * 1.047) * k), h + 1 - Math.floor(k * k * .1), z + Math.round(Math.sin(a * 1.047) * k), k % 2 ? '#5FAE4A' : '#4E9A3D'); };
   palm(30, 38, 11); palm(-46, 4, 12); palm(46, 30, 10);
   const hillH = (x, z) => { if (x < -48 || x > 48 || z < -62 || z > -46) return 0; const d = (-46 - z) / 16, ridge = Math.sin(d * Math.PI); return Math.max(0, Math.round((8 + 7 * Math.sin(x * .09 + 1) + 4 * Math.sin(x * .23)) * ridge)); };
   for (let x = -48; x <= 48; x++) for (let z = -62; z <= -46; z++) { const h = hillH(x, z), low = Math.min(hillH(x + 1, z), hillH(x - 1, z), hillH(x, z + 1), hillH(x, z - 1)); for (let y = 1; y <= h; y++) if (y > low - 1 || y === h) add(x, y, z, y > 11 ? '#2D5A48' : pick(['#4F7F36', '#5A8C3C', '#477531'], x, y, z)); }
   for (let x = -47; x <= 47; x += 4) { add(x, 1, 43, '#8A6240'); add(x, 2, 43, '#8A6240'); } for (let x = -47; x <= 47; x++) add(x, 2, 43, '#A07850');
+  // a drip-irrigated bed along the front: two rows, a black pipe on each
+  for (let x = -41; x <= -7; x++) for (const z of [35, 36, 38, 39]) add(x, .5, z, pick(['#5a3a22', '#63402a'], x, 2, z));
+  for (let x = -42; x <= -6; x++) { add(x, 1.5, 37, '#1c1c1c'); if ((x + 60) % 3 === 0) add(x, 1.5, 36, '#2a2a2a'), add(x, 1.5, 38, '#2a2a2a'); }
+  for (let y = 1; y <= 4; y++) add(-6, y, 37, '#1c1c1c'); add(-6, 5, 37, '#2F7FC0'); add(-5, 5, 37, '#2F7FC0');
+  for (let x = -40; x <= -8; x += 3) for (const z of [35, 39]) { const h = 2 + Math.floor(hash(x, z, 9) * 2); for (let y = 1; y <= h; y++) add(x, y + .5, z, y === h ? '#5FAE4A' : '#4E9A3D'); add(x + 1, h + .5, z, '#5FAE4A'); if (hash(x, z, 4) < .6) add(x, h - .5, z + (z < 37 ? -1 : 1), '#E2402F'); }
   const farmM = inst(solid(), FV.length); farm.add(farmM);
   FV.forEach((v, i) => { put(farmM.instanceMatrix.array, i, v[0], v[1], v[2], 1); farmM.setColorAt(i, tint(v[3], i, .08)); }); farmM.instanceMatrix.needsUpdate = true;
   // rice
@@ -94,6 +99,44 @@ export function createJourney(canvas) {
   const stick = new THREE.Group(); farm.add(stick); { const m = inst(solid(), 22); for (let k = 0; k < 22; k++) { put(m.instanceMatrix.array, k, 0, k, 0, k < 4 ? 1.6 : .8); m.setColorAt(k, col.set(k < 4 ? '#B79868' : '#8A6240')); } m.instanceMatrix.needsUpdate = true; stick.add(m); }
   const lance = new THREE.Group(); man.add(lance); { const m = inst(solid(), 14); for (let k = 0; k < 14; k++) { put(m.instanceMatrix.array, k, 0, 0, k, k === 13 ? 1.3 : .7); m.setColorAt(k, col.set(k === 13 ? '#E2B84A' : '#30363A')); } m.instanceMatrix.needsUpdate = true; lance.add(m); lance.position.set(3, 8, 1); lance.rotation.x = .2; }
   const packM = inst(solid(), 27); man.add(packM); { let i = 0; for (let x = -1; x <= 1; x++) for (let y = 6; y <= 10; y += 2) for (let z = -3; z <= -1; z++) { put(packM.instanceMatrix.array, i, x * 1.2, y + .5, z, 1.2); packM.setColorAt(i++, col.set(y === 10 ? '#1E5F96' : '#2F7FC0')); } packM.count = i; packM.instanceMatrix.needsUpdate = true; }
+  function rig(list) { const m = inst(solid(), list.length); list.forEach((v, i) => { put(m.instanceMatrix.array, i, v[0], v[1], v[2], v[4] || 1); m.setColorAt(i, tint(v[3], i, .06)); }); m.instanceMatrix.needsUpdate = true; m.instanceColor.needsUpdate = true; return m; }
+  // the tractor with a spray boom
+  const tractor = new THREE.Group(); farm.add(tractor);
+  { const L = [], a = (x, y, z, c, s) => L.push([x, y, z, c, s]);
+    for (const sx of [-4, -5, 4, 5]) { for (let dy = -3; dy <= 3; dy++) for (let dz = -3; dz <= 3; dz++) if (Math.hypot(dy, dz) <= 3.3) a(sx, 3 + dy, 3 + dz, dy === 0 && dz === 0 ? '#E2B84A' : Math.hypot(dy, dz) > 2.3 ? '#1c1c1c' : '#3a3a3a');
+      if (Math.abs(sx) === 4) for (let dy = -2; dy <= 2; dy++) for (let dz = -2; dz <= 2; dz++) if (Math.hypot(dy, dz) <= 2.3) a(sx, 2 + dy, -5 + dz, dy === 0 && dz === 0 ? '#E2B84A' : '#1c1c1c'); }
+    for (let x = -3; x <= 3; x++) for (let z = -7; z <= 5; z++) for (let y = 3; y <= 4; y++) a(x, y, z, '#3E8948');
+    for (let x = -2; x <= 2; x++) for (let z = -7; z <= -1; z++) for (let y = 5; y <= 6; y++) a(x, y, z, z === -7 ? '#23323A' : '#4E9A3D');
+    for (let x = -3; x <= 3; x++) for (let z = 0; z <= 5; z++) for (let y = 5; y <= 10; y++) { const frame = (Math.abs(x) === 3 && (z === 0 || z === 5)) || y === 5; if (y === 10) a(x, y, z, '#EEE8DE'); else if (frame) a(x, y, z, '#3E8948'); else if (Math.abs(x) === 3 || z === 0 || z === 5) a(x, y, z, '#9FD8EE'); }
+    for (let y = 7; y <= 9; y++) a(2, y, -5, '#6B6F72');
+    for (let x = -3; x <= 3; x++) for (let z = 6; z <= 9; z++) for (let y = 5; y <= 8; y++) if (Math.abs(x) === 3 || z === 6 || z === 9 || y === 5 || y === 8) a(x, y, z, y === 8 ? '#1E5F96' : '#2F7FC0');
+    for (let x = -24; x <= 0; x++) { a(x, 8, 10, '#8A9096'); if (x % 4 === 0) a(x, 7, 10, '#E2B84A'); } for (let y = 5; y <= 8; y++) a(0, y, 10, '#8A9096');
+    tractor.add(rig(L)); }
+  // the drone that becomes a plane
+  const drone = new THREE.Group(); farm.add(drone);
+  const dBody = new THREE.Group(), dArms = new THREE.Group(), dWings = new THREE.Group(), rotors = [];
+  { const L = [], a = (x, y, z, c) => L.push([x, y, z, c]);
+    for (let x = -1; x <= 1; x++) for (let z = -3; z <= 3; z++) for (let y = 0; y <= 1; y++) a(x, y, z, y === 1 && Math.abs(z) < 2 ? '#7CA240' : '#EEE8DE'); a(0, 1, -4, '#30363A'); a(0, 0, -4, '#EEE8DE');
+    for (let x = -1; x <= 1; x++) for (let z = -1; z <= 1; z++) a(x, -1.5, z, '#2F7FC0'); for (const sx of [-1, 1]) for (const sz of [-1, 1]) a(sx, -2.6, sz, '#30363A');
+    dBody.add(rig(L)); }
+  { const L = [], a = (x, y, z, c) => L.push([x, y, z, c]);
+    for (const sx of [-1, 1]) for (const sz of [-1, 1]) { for (let k = 2; k <= 4; k++) a(sx * k, .5, sz * k, '#30363A'); a(sx * 5, 1.2, sz * 5, '#E2B84A');
+      const g = new THREE.Group(); g.position.set(sx * 5, 2.1, sz * 5); const P = []; for (let k = -2; k <= 2; k++) { P.push([k, 0, 0, '#C9CCC4', .9]); if (k) P.push([0, 0, k, '#C9CCC4', .9]); } g.add(rig(P)); dArms.add(g); rotors.push(g); }
+    dArms.add(rig(L)); }
+  { const L = [], a = (x, y, z, c) => L.push([x, y, z, c]);
+    for (let x = -11; x <= 11; x++) for (let z = -1; z <= 1; z++) if (Math.abs(x) > 1 && !(Math.abs(x) > 9 && z === -1)) a(x, .5, z, Math.abs(x) > 8 ? '#7CA240' : '#EEE8DE');
+    for (let x = -4; x <= 4; x++) if (Math.abs(x) > 1) a(x, .5, 4, '#EEE8DE'); for (let y = 2; y <= 4; y++) a(0, y, 4 - (y > 3 ? 0 : 0), '#7CA240'); a(0, 2, 3, '#7CA240');
+    for (let k = -2; k <= 2; k++) if (k) a(k, .5, -5, '#30363A');
+    dWings.add(rig(L)); }
+  drone.add(dBody, dArms, dWings);
+  // harvest crates by the path
+  const crates = new THREE.Group(); farm.add(crates);
+  { const L = [], a = (x, y, z, c) => L.push([x, y, z, c]); const fill = ['#E3C04B', '#E2402F', '#8CC152'];
+    [[0, 0], [5, 1], [2.5, 5]].forEach(([ox, oz], n) => { for (let x = 0; x <= 3; x++) for (let z = 0; z <= 3; z++) for (let y = 0; y <= 2; y++) if (x === 0 || x === 3 || z === 0 || z === 3 || y === 0) a(ox + x, y, oz + z, (x + z + y) % 2 ? '#B79868' : '#A58450');
+      for (let x = 0; x <= 3; x++) for (let z = 0; z <= 3; z++) if (hash(x, z, n) < .85) a(ox + x, 3 - (hash(x, z, n + 3) < .3 ? .4 : 0), oz + z, fill[n]); });
+    crates.add(rig(L)); crates.position.set(5, 1, 35); }
+  const NDRIP = 66, dripM = inst(glass('#9fdcff', .85), NDRIP, false); farm.add(dripM);
+  const NLIFE = 420, lifeM = inst(glow(), NLIFE, false); farm.add(lifeM); for (let i = 0; i < NLIFE; i++) lifeM.setColorAt(i, col.set(i % 5 === 0 ? '#ffb3d0' : i % 5 === 1 ? '#d9bdff' : i % 5 === 2 ? '#ffe27a' : '#b6f07a')); lifeM.instanceColor.needsUpdate = true;
   const NSPR = 520, sprayM = inst(glass('#dff6ff', .75), NSPR, false); farm.add(sprayM);
   const NF = 1400, fieldM = inst(glow(), NF, false); farm.add(fieldM); for (let i = 0; i < NF; i++) fieldM.setColorAt(i, col.set(i % 4 === 0 ? '#d9bdff' : i % 4 === 1 ? '#eaffb0' : '#b6f07a'));
   for (const m of [bigM, smM, molM, riceM, swirlM, fieldM, sprayM]) if (m.instanceColor) m.instanceColor.needsUpdate = true;
@@ -106,7 +149,8 @@ export function createJourney(canvas) {
   const KEY = {
     tank: [[V(22, 150, 60), V(22, 6, 26)], [V(40, 64, 62), V(22, 8, 26)], [V(30, 30, 44), V(22, 8, 26)], [V(22, 17, 28.5), V(22, 7, 26)]],
     spray: [[V(40, 30, 66), V(-8, 6, 24)], [V(36, 30, 50), V(-14, 4, 8)], [V(28, 30, 38), V(-22, 3, -6)]],
-    field: [[V(28, 30, 38), V(-22, 3, -6)], [V(4, 15, 26), V(-25, 3, -10)], [V(30, 46, 70), V(-12, 2, -6)], [V(70, 120, 150), V(-4, 0, -6)]],
+    field: [[V(-2, 26, 46), V(-22, 3, -2)], [V(4, 15, 26), V(-25, 3, -10)], [V(30, 46, 70), V(-12, 2, -6)]],
+    close: [[V(30, 46, 70), V(-12, 2, -6)], [V(-24, 9, 66), V(-24, 0, 40)], [V(20, 13, 58), V(10, 4, 36)], [V(70, 120, 150), V(-4, 0, -6)]],
   };
 
   function microFrame(p, t, s, u) {
@@ -149,29 +193,62 @@ export function createJourney(canvas) {
     return micro;
   }
 
+  const Pc = V(0, 0, 0), Tc = V(0, 0, 0), Pa = V(0, 0, 0), Ta = V(0, 0, 0), dPos = V(0, 0, 0), QW = new THREE.Quaternion();
   function farmFrame(p, t, s, u) {
-    // s: 3 tank, 5 spray, 6 field
-    const atTank = s === 3, walk = s === 5 ? ease(u) : s === 6 ? 1 : 0;
-    // rice sways; spores settle on it and multiply
-    const Rm = riceM.instanceMatrix.array; let i = 0; for (const [x, z, h] of RICE) { const sw = Math.sin(t * 1.6 + x * .3 + z * .2) * .35; for (let y = 0; y < h; y++) put(Rm, i++, x + sw * y / h, y + .2, z, y === h - 1 ? .7 : .55); } riceM.instanceMatrix.needsUpdate = true;
-    // farmer: stirring at the tank, then spraying along the paddy edge
+    // s: 3 tank, 5 backpack sprayer at dawn, 7 any equipment, 6 field, 8 closing
+    const atTank = s === 3, walk = s === 5 ? ease(u) : 0, close = s === 8, equip = s === 7;
+    // rice sways; in the closing it grows taller and fuller (vigour)
+    const vig = close ? ease(seg(u, .08, .6)) : 0, Rm = riceM.instanceMatrix.array; let i = 0;
+    for (const [x, z, h] of RICE) { const sw = Math.sin(t * 1.6 + x * .3 + z * .2) * .35; for (let y = 0; y < h; y++) put(Rm, i++, x + sw * y / h, y * (1 + vig * .45) + .2, z, (y === h - 1 ? .7 : .55) + vig * .3); }
+    riceM.instanceMatrix.needsUpdate = true;
+    // the farmer: stirring at the tank, spraying with the backpack, then standing by
     if (atTank) { man.position.set(TK[0] - 10, 1, TK[1] + 1); man.rotation.y = Math.PI / 2; const a = t * 2.2 + p * 60; stick.visible = true; stick.position.set(TK[0] + Math.cos(a) * 2.6, 5, TK[1] + Math.sin(a) * 2.6); stick.rotation.set(Math.sin(a) * .22, 0, -.5 - Math.cos(a) * .12); armL.rotation.set(-1.1 + Math.sin(a) * .25, 0, .2); armR.rotation.set(-1.25 + Math.cos(a) * .25, 0, -.2); lance.visible = false; packM.visible = false; }
-    else { man.position.set(lerp(-1, -4, walk), 1, lerp(34, 6, walk)); man.rotation.y = Math.PI + .95 + Math.sin(t * 1.4) * .3; stick.visible = false; lance.visible = true; packM.visible = true; armL.rotation.set(-.4, 0, .1); armR.rotation.set(-1.2, 0, -.1); man.position.y = 1 + Math.abs(Math.sin(t * 5)) * .25 * (s === 5 ? 1 : 0); }
+    else if (s === 5) { man.position.set(lerp(-1, -4, walk), 1 + Math.abs(Math.sin(t * 5)) * .25, lerp(34, 6, walk)); man.rotation.y = Math.PI + .95 + Math.sin(t * 1.4) * .3; stick.visible = false; lance.visible = true; packM.visible = true; armL.rotation.set(-.4, 0, .1); armR.rotation.set(-1.2, 0, -.1); }
+    else { man.position.set(close ? 17 : 2, 1, close ? 33 : 30); man.rotation.y = close ? .35 : -Math.PI / 2; stick.visible = false; lance.visible = false; packM.visible = !close; const wave = close ? Math.sin(t * 5) * .5 : 0; armL.rotation.set(0, 0, .12); armR.rotation.set(0, 0, close ? -2.6 + wave : -.12); }
     man.updateMatrixWorld(true);
-    // tank swirl
     const Sw = swirlM.instanceMatrix.array; for (let k = 0; k < 90; k++) { const a = k * .7 + t * 1.8 + p * 50, d = .6 + (k / 90) * 4.2; put(Sw, k, TK[0] + Math.cos(a) * d, 8.6, TK[1] + Math.sin(a) * d, atTank ? .5 : 0); } swirlM.instanceMatrix.needsUpdate = true;
-    // spray: a fan of droplets from the lance tip, carrying spores
-    const tip = lance.localToWorld(V(0, 0, 13.5)), dir = V(0, 0, 1).applyQuaternion(lance.getWorldQuaternion(new THREE.Quaternion())), Sp = sprayM.instanceMatrix.array, on = s === 5 ? seg(u, .06, .2) : s === 6 ? 1 - seg(u, .3, .55) : 0;
-    const side = V(dir.z, 0, -dir.x);
-    for (let k = 0; k < NSPR; k++) { const ph = (t * .9 + hash(k, 1)) % 1, sp = (hash(k, 2) - .5) * 2, lift = hash(k, 3), reach = ph * 26; put(Sp, k, tip.x + dir.x * reach + side.x * sp * ph * 15, Math.max(1.2, tip.y + 1.5 * ph - ph * ph * 7 + lift * 2.5 * ph), tip.z + dir.z * reach + side.z * sp * ph * 15, on * (ph < .96 ? .5 + ph * .8 : 0)); }
+    // equipment: tractor with boom (a), drip line (b), drone that turns into a plane (c)
+    const ua = seg(u, 0, .32), uc = seg(u, .62, 1), morph = equip ? ease(seg(uc, .5, .68)) : 0, fly = equip ? seg(uc, .66, 1) : 0;
+    const tz = lerp(10, -30, ua); tractor.visible = equip || s === 6 || close; tractor.position.set(43, 1, equip ? tz : -30);
+    drone.visible = equip && u > .5; dPos.set(lerp(-40, -14, ease(seg(uc, 0, .6))) + fly * fly * 150, 16 + Math.sin(t * 2) * .4 + fly * fly * 70, -2 - fly * 10); drone.position.copy(dPos); drone.rotation.set(0, -Math.PI / 2, -fly * .35);
+    dArms.scale.setScalar(Math.max(.001, 1 - morph)); dWings.scale.set(Math.max(.001, morph), Math.max(.001, morph), Math.max(.001, morph)); for (const r of rotors) r.rotation.y = t * 31;
+    // spray: from the lance, the boom nozzles or the drone
+    const Sp = sprayM.instanceMatrix.array;
+    if (s === 5) { const tip = lance.localToWorld(V(0, 0, 13.5)), dir = V(0, 0, 1).applyQuaternion(lance.getWorldQuaternion(QW)), on = seg(u, .06, .2), sx = dir.z, sz = -dir.x;
+      for (let k = 0; k < NSPR; k++) { const ph = (t * .9 + hash(k, 1)) % 1, sp = (hash(k, 2) - .5) * 2, reach = ph * 26; put(Sp, k, tip.x + dir.x * reach + sx * sp * ph * 15, Math.max(1.2, tip.y + 1.5 * ph - ph * ph * 7 + hash(k, 3) * 2.5 * ph), tip.z + dir.z * reach + sz * sp * ph * 15, on * (ph < .96 ? .5 + ph * .8 : 0)); } }
+    else if (equip && u < .4) { for (let k = 0; k < NSPR; k++) { const ph = (t * 1.3 + hash(k, 1)) % 1, n = k % 7; put(Sp, k, 43 - n * 4 + (hash(k, 2) - .5) * 3 * ph, 8 - ph * 7, tz + 10 + (hash(k, 3) - .5) * 3 * ph + ph * 2.5, (1 - seg(u, .3, .38)) * (.35 + ph * .5)); } }
+    else if (equip && u > .56) { const on = 1 - morph; for (let k = 0; k < NSPR; k++) { const ph = (t * 1.2 + hash(k, 1)) % 1, a = hash(k, 2) * 6.283, r = ph * 7 * hash(k, 3); put(Sp, k, dPos.x + Math.cos(a) * r - ph * 3, dPos.y - 3 - ph * 12, dPos.z + Math.sin(a) * r, on * seg(uc, .04, .14) * (.35 + ph * .5)); } }
+    else for (let k = 0; k < NSPR; k++) put(Sp, k, 0, -50, 0, 0);
     sprayM.instanceMatrix.needsUpdate = true;
+    // drip line: drops fall from every emitter
+    const Dm = dripM.instanceMatrix.array, don = equip ? seg(u, .3, .4) * (1 - seg(u, .62, .7)) : 0;
+    for (let k = 0; k < NDRIP; k++) { const e = k % 12, row = k % 2 ? 36 : 38, ph = (t * 1.6 + hash(k, 1)) % 1; put(Dm, k, -39 + e * 3, 1.2 - ph * .9, row + (row < 37 ? -.4 : .4) * ph, don * (ph < .85 ? .38 : .7)); }
+    dripM.instanceMatrix.needsUpdate = true;
     // in the field, the spores land and multiply outward from where the spray fell
-    const F = fieldM.instanceMatrix.array, grow = s === 5 ? seg(u, .35, 1) * .16 : s === 6 ? .16 + ease(seg(u, 0, .85)) * .84 : 0;
+    const F = fieldM.instanceMatrix.array, grow = s === 5 ? seg(u, .35, 1) * .14 : equip ? .14 + u * .2 : s === 6 ? .34 + ease(seg(u, 0, .85)) * .66 : close ? 1 : 0;
     for (let k = 0; k < NF; k++) { const born = k / NF, a = hash(k, 1) * 6.283, d = Math.sqrt(born) * 40, x = clamp(FIELD.x - 6 + Math.cos(a) * d * .55, -40, -6), z = clamp(FIELD.z + 6 + Math.sin(a) * d, -34, 30), alive = grow > born ? eo(seg(grow, born, born + .08)) : 0;
       put(F, k, x + Math.sin(t + k) * .3, 1 + hash(k, 4) * 5 + Math.sin(t * 1.3 + k) * .4, z, alive * (.34 + .12 * Math.sin(t * 3 + k))); }
     fieldM.instanceMatrix.needsUpdate = true;
-    camPath(s === 3 ? KEY.tank : s === 5 ? KEY.spray : KEY.field, u);
-    farm.background = bgA.set('#cfe7dc'); sun.target.position.set(0, 0, 0);
+    // soil life and symbiosis: microbes glow in the soil; little lights travel between root and plant
+    const Lm = lifeM.instanceMatrix.array, lon = close ? ease(seg(u, .12, .45)) : 0, don2 = equip ? don : 0;
+    for (let k = 0; k < NLIFE; k++) {
+      if (k < 60) { const e = k % 12; put(Lm, k, -39 + e * 3 + (hash(k, 1) - .5) * 2.4, .9 + hash(k, 2) * .6, (k % 2 ? 35.2 : 38.8) + (hash(k, 3) - .5) * 1.6, Math.max(don2, lon) * (.22 + .12 * Math.sin(t * 4 + k))); }
+      else if (k < 300) put(Lm, k, -47 + hash(k, 1) * 94, -.6 - hash(k, 2) * 4.2, 44.62, lon * (.3 + .2 * Math.sin(t * 3 + k * 1.7)));
+      else { const ph = (t * .35 + hash(k, 1)) % 1, x = -38 + hash(k, 2) * 30, z = 12 + hash(k, 3) * 17; put(Lm, k, x + Math.sin(ph * 6 + k) * .5, ph * 7, z, lon * Math.sin(ph * Math.PI) * .5); }
+    }
+    lifeM.instanceMatrix.needsUpdate = true;
+    crates.visible = close; const pop = close ? eo(seg(u, .5, .66)) : 0; crates.scale.setScalar(Math.max(.001, pop)); crates.position.y = 1 + (1 - pop) * 6;
+    // camera
+    if (equip) {
+      const shot = (n) => { if (n === 0) { Pc.set(66, 24, tz + 32); Tc.set(32, 4, tz + 2); } else if (n === 1) { const v = seg(u, .34, .6); Pc.set(-36 + v * 22, 12, 58); Tc.set(-32 + v * 22, 1, 37); } else { Pc.set(-2 + uc * 14, 24, 40); Tc.set(Math.min(dPos.x, 40), Math.min(dPos.y, 40) - 3, dPos.z); } };
+      if (u < .3) shot(0); else if (u < .36) { shot(0); Pa.copy(Pc); Ta.copy(Tc); shot(1); const k = ease(seg(u, .3, .36)); Pc.lerpVectors(Pa, Pc, k); Tc.lerpVectors(Ta, Tc, k); }
+      else if (u < .58) shot(1); else if (u < .64) { shot(1); Pa.copy(Pc); Ta.copy(Tc); shot(2); const k = ease(seg(u, .58, .64)); Pc.lerpVectors(Pa, Pc, k); Tc.lerpVectors(Ta, Tc, k); } else shot(2);
+      cam.position.copy(Pc); cam.lookAt(Tc);
+    } else camPath(s === 3 ? KEY.tank : s === 5 ? KEY.spray : close ? KEY.close : KEY.field, u);
+    // light: a warm, low sun for the early application; soft daylight otherwise
+    const dawn = s === 5 ? 1 : equip ? 1 - seg(u, 0, .25) : 0;
+    farm.background = bgA.set('#cfe7dc').lerp(bgB.set('#f7d9b4'), dawn); farm.fog.color.copy(farm.background);
+    sun.color.set('#fff0d2').lerp(col.set('#ffb070'), dawn); sun.intensity = 2.9 - dawn * .5; sun.position.set(lerp(-50, -90, dawn), lerp(90, 42, dawn), lerp(40, 30, dawn));
     return farm;
   }
 
@@ -180,8 +257,9 @@ export function createJourney(canvas) {
   // returns the flash amount (0..1): how much the page should veil the cut between the two worlds
   function render(p, t) {
     size();
-    const x = clamp(p, 0, .99999) * 7, s = Math.floor(x), u = x - s;
-    const scene = (s === 3 || s >= 5) ? farmFrame(p, t, s, u) : microFrame(p, t, s, u);
+    // nine stages: spore, gel, water, tank, swirl, backpack, equipment, field, closing
+    const x = clamp(p, 0, .99999) * 9, n = Math.floor(x), u = x - n, s = [0, 1, 2, 3, 4, 5, 7, 6, 8][n];
+    const scene = (n === 3 || n >= 5) ? farmFrame(p, t, s, u) : microFrame(p, t, s, u);
     R.render(scene, cam);
     const cuts = [3, 4, 5]; let f = 0; for (const c of cuts) f = Math.max(f, 1 - Math.min(1, Math.abs(x - c) / .09));
     return f;
