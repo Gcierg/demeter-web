@@ -1,0 +1,20 @@
+// Checks the soundtrack: starts on click, makes signal, mutes outside the journey, stops on second click.
+import { chromium } from '/Users/yenniferizariza/lemo-opuscar/node_modules/playwright-core/index.mjs';
+import http from 'node:http'; import fs from 'node:fs'; import path from 'node:path';
+const root = path.resolve(path.dirname(decodeURIComponent(new URL(import.meta.url).pathname)), '..'), out = process.argv[2];
+const MIME = { html: 'text/html', js: 'text/javascript', css: 'text/css', json: 'application/json', jpg: 'image/jpeg', png: 'image/png', mp4: 'video/mp4', vtt: 'text/vtt', ttf: 'font/ttf' };
+const srv = http.createServer((q, r) => { const p = path.join(root, decodeURIComponent(q.url.split('?')[0])); const f = fs.existsSync(p) && fs.statSync(p).isDirectory() ? path.join(p, 'index.html') : p; if (!fs.existsSync(f)) { r.writeHead(404); return r.end(); } r.writeHead(200, { 'content-type': MIME[f.split('.').pop()] || 'application/octet-stream' }); fs.createReadStream(f).pipe(r); }).listen(0);
+const b = await chromium.launch({ executablePath: process.env.PLAYWRIGHT_CHROME, args: ['--use-angle=metal', '--enable-gpu', '--ignore-gpu-blocklist', '--autoplay-policy=user-gesture-required'] });
+const pg = await b.newPage({ viewport: { width: 1280, height: 800 } }); const errs = []; pg.on('pageerror', e => errs.push(String(e))); pg.on('console', m => { if (m.type() === 'error') errs.push(m.text()); });
+await pg.goto(`http://127.0.0.1:${srv.address().port}/?lang=es`); await pg.waitForTimeout(600);
+const jump = f => pg.evaluate(f => { const s = document.getElementById('journey'); scrollTo({ top: s.offsetTop + (s.offsetHeight - innerHeight) * f, behavior: 'instant' }); }, f);
+const peak = async ms => { let m = 0; const t0 = Date.now(); while (Date.now() - t0 < ms) { m = Math.max(m, await pg.evaluate(() => window.__snd.level())); await pg.waitForTimeout(60); } return +m.toFixed(3); };
+const R = {};
+await jump(.1); await pg.waitForTimeout(500); R.before = { state: await pg.evaluate(() => window.__snd.state()), level: await peak(400) };
+await pg.click('#sndBtn'); await pg.waitForTimeout(2500); R.on = { state: await pg.evaluate(() => window.__snd.state()), pressed: await pg.getAttribute('#sndBtn', 'aria-pressed'), level: await peak(3500) };
+await pg.screenshot({ path: out + '/snd_on.jpg', type: 'jpeg', quality: 70 });
+await jump(.26); await pg.waitForTimeout(2500); R.water = { level: await peak(3000) };
+await pg.evaluate(() => scrollTo({ top: 0, behavior: 'instant' })); await pg.waitForTimeout(2500); R.outside = { level: await peak(1200) };
+await jump(.6); await pg.waitForTimeout(2500); R.back = { level: await peak(3000) };
+await pg.click('#sndBtn'); await pg.waitForTimeout(1800); R.off = { state: await pg.evaluate(() => window.__snd.state()), pressed: await pg.getAttribute('#sndBtn', 'aria-pressed'), level: await peak(600) };
+console.log(JSON.stringify({ errs, R })); await b.close(); srv.close();
