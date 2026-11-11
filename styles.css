@@ -139,7 +139,7 @@ video::cue{font:500 1rem Barlow,sans-serif;background:rgba(13,31,25,.88);color:#
 
 /* contact */
 .contact{background:var(--dg);color:var(--cream)}
-.dgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:48px}
+.dgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
 .dgrid article{background:rgba(255,255,255,.06);border:1px solid rgba(238,232,222,.14);border-radius:18px;padding:24px 22px;display:flex;flex-direction:column;gap:6px}
 .dgrid b{font:600 .78rem Barlow;letter-spacing:.14em;text-transform:uppercase;color:var(--leafL)}
 .dgrid h3{font-size:1.25rem;margin:4px 0 8px}
@@ -147,7 +147,7 @@ video::cue{font:500 1rem Barlow,sans-serif;background:rgba(13,31,25,.88);color:#
 .dgrid a{font-weight:600;color:var(--cream);text-underline-offset:4px;overflow-wrap:anywhere}
 .dgrid a[href^=mailto]{font-size:.86rem;font-weight:500}
 .dgrid a:hover{color:var(--leafL)}
-@media(max-width:1000px){.dgrid{grid-template-columns:1fr 1fr}}
+@media(max-width:900px){.dgrid{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){.dgrid{grid-template-columns:1fr}}
 
 footer{background:var(--ink);color:rgba(238,232,222,.7);padding:44px 24px 56px;text-align:center;font-size:.95rem}
