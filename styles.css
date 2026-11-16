@@ -96,7 +96,6 @@ section{padding:clamp(72px,10vw,140px) 0;position:relative}
 .stages span{font:700 .95rem Zilla,serif;color:var(--leafL);letter-spacing:.12em}
 .stages h3{font-size:clamp(1.9rem,4.6vw,3.6rem);margin:8px 0 10px;max-width:16ch;text-shadow:0 2px 24px rgba(0,0,0,.45)}
 .stages p{font-size:clamp(1.05rem,1.6vw,1.3rem);max-width:38rem;color:rgba(238,232,222,.9);text-shadow:0 1px 14px rgba(0,0,0,.5)}
-.seqnote{position:absolute;right:16px;top:112px;font-size:.78rem;padding:6px 10px;border-radius:999px;background:rgba(13,31,25,.7);color:rgba(238,232,222,.75)}
 
 /* factors */
 .factors{background:var(--cream)}

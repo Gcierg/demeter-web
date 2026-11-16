@@ -65,7 +65,7 @@
   // ---------------------------------------------------------------- journey: frames driven by scroll
   // If assets/seq/manifest.json exists ({"count": N, "ext": "jpg"}), the canvas plays those frames (f_0001.jpg ...).
   // Otherwise it draws a coded preview of the same seven stages.
-  const sec = $('#journey'), cv = $('#seq'), cx = cv.getContext('2d'), bar = $('#jbar'), stages = $$('#stages li'), note = $('#seqnote');
+  const sec = $('#journey'), cv = $('#seq'), cx = cv.getContext('2d'), bar = $('#jbar'), stages = $$('#stages li');
   let frames = null, ready = 0, cuts = null, j3d = null;
   const cv3 = $('#seq3d'), flash = $('#flash');
   fetch('assets/seq/manifest.json').then(r => r.ok ? r.json() : null).then(m => {
